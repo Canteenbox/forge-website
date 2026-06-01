@@ -133,6 +133,80 @@
       margin-bottom: 12px;
     }
 
+    /* ── EDITABLE FIELDS ── */
+    .editable {
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      display: inline-block;
+      transition: border-color 0.2s, color 0.2s;
+      line-height: 1.1;
+    }
+    .editable:hover {
+      border-bottom-color: rgba(255,74,0,0.5);
+    }
+    .edit-hint {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 10px;
+      letter-spacing: 2px;
+      color: var(--muted);
+      margin-top: 6px;
+      font-family: 'Share Tech Mono', monospace;
+    }
+    .edit-form {
+      display: none;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 4px;
+    }
+    .edit-form.open { display: flex; }
+    .edit-form input {
+      background: rgba(34,34,34,0.8);
+      border: 1px solid var(--orange);
+      color: var(--ash);
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      padding: 10px 14px;
+      outline: none;
+      transition: box-shadow 0.2s;
+      width: 100%;
+    }
+    .edit-form input:focus {
+      box-shadow: 0 0 0 2px rgba(255,74,0,0.25);
+    }
+    .edit-form input[type="date"] { color-scheme: dark; }
+    .btn-row { display: flex; gap: 10px; }
+    .btn-save {
+      background: var(--orange);
+      color: #0A0A0A;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900;
+      font-size: 12px;
+      letter-spacing: 3px;
+      padding: 9px 22px;
+      border: none;
+      cursor: pointer;
+      text-transform: uppercase;
+      transition: background 0.2s, transform 0.15s;
+    }
+    .btn-save:hover { background: var(--amber); transform: translateY(-1px); }
+    .btn-cancel {
+      background: transparent;
+      color: var(--muted);
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      font-size: 12px;
+      letter-spacing: 3px;
+      padding: 9px 22px;
+      border: 1px solid var(--dim);
+      cursor: pointer;
+      text-transform: uppercase;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .btn-cancel:hover { border-color: var(--muted); color: var(--ash); }
 
     /* ── COUNTDOWN ── */
     .cd-digit {
@@ -413,7 +487,7 @@
 
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:start;">
 
-      <!-- ── Event Details ── -->
+      <!-- ── Event Details (editable) ── -->
       <div style="
         border:1px solid #222; padding:40px;
         background:rgba(255,255,255,0.012); position:relative; overflow:hidden;
@@ -426,29 +500,69 @@
         <!-- Event Name -->
         <div style="margin-bottom:28px;">
           <div style="font-size:10px;letter-spacing:3px;color:#555;margin-bottom:8px;">EVENT NAME</div>
-          <div id="ev-name"
-            style="font-size:clamp(26px,3.5vw,44px);font-weight:900;color:#FF4A00;letter-spacing:2px;"></div>
+          <div id="name-val" class="editable" onclick="editOpen('name')"
+            style="font-size:clamp(26px,3.5vw,44px);font-weight:900;color:#FF4A00;letter-spacing:2px;">
+            FORGE FC 1
+          </div>
+          <div class="edit-form" id="name-form">
+            <input type="text" id="name-input" placeholder="e.g. FORGE FC 2" />
+            <div class="btn-row">
+              <button class="btn-save" onclick="editSave('name')">SAVE</button>
+              <button class="btn-cancel" onclick="editClose('name')">CANCEL</button>
+            </div>
+          </div>
+          <div class="edit-hint">✏ click to edit</div>
         </div>
 
         <!-- Date -->
         <div style="margin-bottom:28px;">
           <div style="font-size:10px;letter-spacing:3px;color:#555;margin-bottom:8px;">DATE</div>
-          <div id="ev-date"
-            style="font-size:clamp(18px,2.5vw,30px);font-weight:900;color:#E8E4DC;letter-spacing:1px;"></div>
+          <div id="date-val" class="editable" onclick="editOpen('date')"
+            style="font-size:clamp(18px,2.5vw,30px);font-weight:900;color:#E8E4DC;letter-spacing:1px;">
+            TBD
+          </div>
+          <div class="edit-form" id="date-form">
+            <input type="date" id="date-input" />
+            <div class="btn-row">
+              <button class="btn-save" onclick="editSave('date')">SAVE</button>
+              <button class="btn-cancel" onclick="editClose('date')">CANCEL</button>
+            </div>
+          </div>
+          <div class="edit-hint">✏ click to edit</div>
         </div>
 
         <!-- Location -->
         <div style="margin-bottom:28px;">
           <div style="font-size:10px;letter-spacing:3px;color:#555;margin-bottom:8px;">LOCATION</div>
-          <div id="ev-location"
-            style="font-size:clamp(18px,2.5vw,30px);font-weight:900;color:#E8E4DC;letter-spacing:1px;"></div>
+          <div id="location-val" class="editable" onclick="editOpen('location')"
+            style="font-size:clamp(18px,2.5vw,30px);font-weight:900;color:#E8E4DC;letter-spacing:1px;">
+            TBD
+          </div>
+          <div class="edit-form" id="location-form">
+            <input type="text" id="location-input" placeholder="e.g. Miami, FL" />
+            <div class="btn-row">
+              <button class="btn-save" onclick="editSave('location')">SAVE</button>
+              <button class="btn-cancel" onclick="editClose('location')">CANCEL</button>
+            </div>
+          </div>
+          <div class="edit-hint">✏ click to edit</div>
         </div>
 
         <!-- Details -->
         <div>
           <div style="font-size:10px;letter-spacing:3px;color:#555;margin-bottom:8px;">DETAILS</div>
-          <div id="ev-details"
-            style="font-size:clamp(14px,1.8vw,20px);font-weight:400;color:#8C9BAB;font-family:'Barlow',sans-serif;line-height:1.6;"></div>
+          <div id="details-val" class="editable" onclick="editOpen('details')"
+            style="font-size:clamp(14px,1.8vw,20px);font-weight:600;color:#8C9BAB;letter-spacing:1px;">
+            Stay tuned for more details
+          </div>
+          <div class="edit-form" id="details-form">
+            <input type="text" id="details-input" placeholder="e.g. Doors open at 6PM" />
+            <div class="btn-row">
+              <button class="btn-save" onclick="editSave('details')">SAVE</button>
+              <button class="btn-cancel" onclick="editClose('details')">CANCEL</button>
+            </div>
+          </div>
+          <div class="edit-hint">✏ click to edit</div>
         </div>
       </div>
 
@@ -773,10 +887,11 @@ PILLARS.forEach(p => {
   pillarsEl.appendChild(d);
 });
 
-/* ── EVENT DETAILS — edit these values and push to update the site ── */
-const EVENT = {
-  name:     'FORGE FC 1',
-  date:     '',              // format: 'YYYY-MM-DD' e.g. '2026-08-15', leave '' if TBD
+/* ── Editable fields ── */
+const KEYS = ['name', 'date', 'location', 'details'];
+const DEFAULTS = {
+  name:     'FFC 2',
+  date:     '2026-06-26',
   location: 'TBD',
   details:  'Stay tuned for more details',
 };
@@ -790,18 +905,63 @@ function fmtDate(raw) {
 }
 
 function loadAll() {
-  document.getElementById('ev-name').textContent     = EVENT.name;
-  document.getElementById('ev-date').textContent     = fmtDate(EVENT.date);
-  document.getElementById('ev-location').textContent = EVENT.location;
-  document.getElementById('ev-details').textContent  = EVENT.details;
+  KEYS.forEach(k => {
+    const stored = localStorage.getItem('forge-' + k);
+    const val = document.getElementById(k + '-val');
+    if (!val) return;
+    if (stored !== null) {
+      val.textContent = k === 'date' ? fmtDate(stored) : (stored || DEFAULTS[k]);
+    }
+  });
   tickCountdown();
 }
+
+function editOpen(k) {
+  const val  = document.getElementById(k + '-val');
+  const form = document.getElementById(k + '-form');
+  const inp  = document.getElementById(k + '-input');
+  val.style.display = 'none';
+  form.classList.add('open');
+  const stored = localStorage.getItem('forge-' + k) || '';
+  inp.value = stored || (k === 'date' ? '' : DEFAULTS[k]);
+  inp.focus();
+}
+
+function editSave(k) {
+  const val  = document.getElementById(k + '-val');
+  const form = document.getElementById(k + '-form');
+  const inp  = document.getElementById(k + '-input');
+  const v    = inp.value.trim();
+  localStorage.setItem('forge-' + k, v);
+  val.textContent = k === 'date' ? fmtDate(v) : (v || DEFAULTS[k]);
+  val.style.display = '';
+  form.classList.remove('open');
+  if (k === 'date') tickCountdown();
+}
+
+function editClose(k) {
+  const val  = document.getElementById(k + '-val');
+  const form = document.getElementById(k + '-form');
+  val.style.display = '';
+  form.classList.remove('open');
+}
+
+/* Enter / Escape key handling */
+KEYS.forEach(k => {
+  const inp = document.getElementById(k + '-input');
+  if (!inp) return;
+  inp.addEventListener('keydown', e => {
+    if (e.key === 'Enter')  editSave(k);
+    if (e.key === 'Escape') editClose(k);
+  });
+  if (inp.type === 'date') inp.addEventListener('change', () => editSave(k));
+});
 
 /* ── Countdown ── */
 function pad(n) { return String(n).padStart(2, '0'); }
 
 function tickCountdown() {
-  const raw = EVENT.date;
+  const raw = localStorage.getItem('forge-date');
   const D = document.getElementById('cd-d');
   const H = document.getElementById('cd-h');
   const M = document.getElementById('cd-m');
